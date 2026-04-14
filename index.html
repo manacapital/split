@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sistema de Conferência de Split</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#1f4e79" />
+  </head>
+  <body>
+    <header class="topo">
+      <img src="gontijo.png" class="logo" />
+      <div class="titulo">
+        <h1>Sistema de Conferência de Split</h1>
+        <p>Ceopag • Cooperativa Gontijo</p>
+      </div>
+      <img src="ceopag.png" class="logo" />
+    </header>
+
+    <div id="areaPDF">
+      <!-- 🔵 MENU CONTA LIQUIDANTE -->
+      <div class="menu-split">
+        <div class="menu-container">
+          <span class="menu-titulo-azul">Extrato Conta Liquidante</span>
+
+          <div class="menu-botoes">
+            <label class="botao-upload-verde">
+              Selecionar Extrato da conta Liquidante
+              <input type="file" id="inputExcel" accept=".xlsx,.xls" />
+            </label>
+
+            <button class="botao-cinza" onclick="abrirAjuda()">Ajuda</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALERTA -->
+      <div id="alertaLimite" class="alerta" style="display: none"></div>
+      <div id="erroArquivo" class="erro" style="display: none"></div>
+
+      <div id="resultado" style="display: none">
+        <!-- 🔵 CARD ANÁLISE SPLIT -->
+        <div class="card azul">
+          <h2>Análise Split</h2>
+          <p class="periodo" id="periodoSplit"></p>
+
+          <div class="linha">
+            <span>Liquidação POS</span>
+            <strong id="liquidacao"></strong>
+          </div>
+
+          <div class="linha">
+            <span>Limite (90%)</span>
+            <strong id="limite"></strong>
+          </div>
+
+          <div class="linha">
+            <span>Split Utilizado</span>
+            <strong id="split"></strong>
+          </div>
+
+          <div class="linha">
+            <span>Saldo conta liquidante</span>
+            <strong id="saldoLiquidante"></strong>
+          </div>
+
+          <div class="linha destaque">
+            <span>Saldo Disponível para Split</span>
+            <strong id="saldo"></strong>
+          </div>
+        </div>
+
+        <!-- 🟠 MENU CONTA CORRENTE -->
+        <div class="menu-conta-corrente">
+          <div class="menu-container">
+            <span class="menu-titulo-laranja">Extrato Conta Corrente</span>
+
+            <label class="botao-upload-laranja">
+              Selecionar Extrato Conta Corrente
+              <input type="file" id="inputContaCorrente" accept=".xlsx,.xls" />
+            </label>
+          </div>
+        </div>
+
+        <!-- 🟠 CARD ANÁLISE CONTÁBIL -->
+        <div class="card laranja">
+          <h2>Análise Contábil</h2>
+          <p class="periodo" id="periodoContabil"></p>
+
+          <div class="linha">
+            <span>
+              Saldo Anterior (Saldo Inicial - Transferido para período atual)
+            </span>
+            <strong id="saldoAnterior"></strong>
+          </div>
+
+          <div class="linha">
+            <span>Saldo Inicial + POS</span>
+            <strong id="saldoInicialMaisPOS"></strong>
+          </div>
+
+          <div class="linha">
+            <span>Split Utilizado</span>
+            <strong id="split2"></strong>
+          </div>
+
+          <div class="linha destaque">
+            <span>Valor Contábil Final</span>
+            <strong id="valorFinal"></strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- RODAPÉ -->
+      <footer>
+        Sistema de Conferência de Split • Cooperativa Gontijo - Ceopag<br />
+        <span id="dataHoraGeracao"></span>
+      </footer>
+    </div>
+
+    <!-- MODAL AJUDA -->
+    <div id="modalAjuda" class="modal">
+      <div class="modal-conteudo">
+        <span class="fechar" onclick="fecharAjuda()">&times;</span>
+
+        <h2>Como gerar o seu extrato da conta Liquidante corretamente</h2>
+        <p>
+          Na seção da sua conta liquidante, clique em extrato, filtre o período
+          desejado, preferencialmente sempre do dia 1º até a data atual (do mês
+          vigente), clique em exportar para EXCEL.
+        </p>
+
+        <hr />
+
+        <h3>
+          COMO ENVIAR VALOR CONTÁBIL QUE SERÁ INFORMADO NA CONTA CORRENTE PARA
+          MEU CONTADOR (SE FOR O CASO)
+        </h3>
+        <p>
+          Na sua seção da conta CORRENTE, vá em extrato e faça o filtro do dia
+          1º até o último dia do mês vigente, clique em exportar para EXCEL.
+        </p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then(() => console.log("Service Worker registrado"))
+          .catch((err) => console.log("Erro no SW:", err));
+      }
+    </script>
+  </body>
+</html>
